@@ -3,12 +3,12 @@ package main
 import (
 	"go-rpg/character"
 	"go-rpg/raid"
+	"go-rpg/setup"
+	"log"
 	"net"
-	"os"
 	"strconv"
 
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -16,12 +16,11 @@ import (
 const defaultPort int = 8000
 
 func main() {
-	logger := initLogger()
+	if err := setup.InitLogger(); err != nil {
+		log.Println("error initializing logger: " + err.Error())
+	}
 
-	character.Logger(logger)
-	raid.Logger(logger)
-
-	lis := initListener(logger)
+	lis := initListener(setup.Logger)
 
 	server := grpc.NewServer()
 
@@ -30,24 +29,12 @@ func main() {
 
 	reflection.Register(server)
 
-	logger.Info("server listening on: http://localhost:" + strconv.Itoa(defaultPort))
+	setup.Logger.Info("server listening on: http://localhost:" + strconv.Itoa(defaultPort))
 	if err := server.Serve(lis); err != nil {
-		go logger.Error("error listening network",
+		go setup.Logger.Error("error listening network",
 			zap.String("error", err.Error()),
 		)
 	}
-}
-
-func initLogger() (logger *zap.Logger) {
-	consoleEncoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
-	consoleDebugging := zapcore.Lock(os.Stdout)
-	consoleErrors := zapcore.Lock(os.Stderr)
-	core := zapcore.NewTee(
-		zapcore.NewCore(consoleEncoder, consoleDebugging, zapcore.InfoLevel),
-		zapcore.NewCore(consoleEncoder, consoleErrors, zapcore.ErrorLevel),
-	)
-	logger = zap.New(core)
-	return
 }
 
 func initListener(l *zap.Logger) net.Listener {
