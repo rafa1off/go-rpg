@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package raid;
+
+option go_package = "./raid";
+
+message Raid {
+  bool active = 1;
+
+  message Boss {
+    string name = 1;
+    float health = 2;
+
+    enum Race {
+      HUMAN = 0;
+      ELF = 1;
+      DWARF = 2;
+      ORC = 3;
+    }
+
+    Race race = 3;
+
+    enum Class {
+      HUNTER = 0;
+      WARRIOR = 1;
+      MAGE = 2;
+    }
+
+    Class class = 4;
+  }
+
+  Boss boss = 2;
+}
+
+message Identifier {
+  int64 id = 1;
+}
+
+message Info {
+  string details = 1;
+}
+
+message Entry {
+  int64 id = 1;
+  int64 characterId = 2;
+
+  message Action {
+    int64 dice = 1;
+    string skill = 2;
+  }
+
+  Action action = 3;
+}
+
+service Raids {
+  rpc Create (Raid) returns (Info);
+  rpc Get (Identifier) returns (Raid);
+  rpc Enter (stream Entry) returns (stream Raid);
+  rpc Leave (Identifier) returns (Info);
+}

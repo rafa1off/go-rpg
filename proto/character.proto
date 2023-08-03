@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package character;
+
+option go_package = "./character";
+
+message Character {
+  string name = 1;
+  float health = 2;
+
+  enum Race {
+    HUMAN = 0;
+    ELF = 1;
+    DWARF = 2;
+    ORC = 3;
+  }
+
+  Race race = 3;
+
+  enum Class {
+    HUNTER = 0;
+    WARRIOR = 1;
+    MAGE = 2;
+  }
+
+  Class class = 4;
+}
+
+message Identifier {
+  int64 id = 1;
+}
+
+message Info {
+  string details = 1;
+}
+
+service Characters {
+  rpc Create (Character) returns (Info);
+  rpc Get (Identifier) returns (Character);
+  rpc Delete (Identifier) returns (Info);
+  rpc Update (Identifier) returns (Character);
+}
+
