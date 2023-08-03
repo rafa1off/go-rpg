@@ -3,13 +3,14 @@ package main
 import (
 	"go-rpg/character"
 	"go-rpg/raid"
+	"net"
+	"os"
+	"strconv"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"net"
-	"os"
-	"strconv"
 )
 
 const defaultPort int = 8000
