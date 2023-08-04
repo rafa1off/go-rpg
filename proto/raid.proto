@@ -5,11 +5,12 @@ package raid;
 option go_package = "./raid";
 
 message Raid {
-  bool active = 1;
+  int64 id = 1;
+  bool active = 2;
 
   message Boss {
     string name = 1;
-    float health = 2;
+    int64 health = 2;
 
     enum Race {
       HUMAN = 0;
@@ -29,7 +30,7 @@ message Raid {
     Class class = 4;
   }
 
-  Boss boss = 2;
+  Boss boss = 3;
 }
 
 message Identifier {

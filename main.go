@@ -20,7 +20,7 @@ func main() {
 		log.Println("error initializing logger: " + err.Error())
 	}
 
-	lis := initListener(setup.Logger)
+	lis := initListener()
 
 	server := grpc.NewServer()
 
@@ -37,12 +37,11 @@ func main() {
 	}
 }
 
-func initListener(l *zap.Logger) net.Listener {
+func initListener() net.Listener {
 	lis, err := net.Listen("tcp", "0.0.0.0:"+strconv.Itoa(defaultPort))
 	if err != nil {
-		go l.Error("error listening network",
-			zap.String("error", err.Error()),
-		)
+		go setup.Logger.Error("error listening network",
+			zap.String("details", err.Error()))
 	}
 	return lis
 }
