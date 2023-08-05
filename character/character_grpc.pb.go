@@ -31,10 +31,10 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CharactersClient interface {
 	Create(ctx context.Context, in *Character, opts ...grpc.CallOption) (*Info, error)
-	Get(ctx context.Context, in *Identifier, opts ...grpc.CallOption) (*Character, error)
-	Delete(ctx context.Context, in *Identifier, opts ...grpc.CallOption) (*Info, error)
-	Update(ctx context.Context, in *CharEdit, opts ...grpc.CallOption) (*Character, error)
-	GetAll(ctx context.Context, in *DB, opts ...grpc.CallOption) (*CharList, error)
+	Get(ctx context.Context, in *CharData, opts ...grpc.CallOption) (*CharData, error)
+	Delete(ctx context.Context, in *CharData, opts ...grpc.CallOption) (*Info, error)
+	Update(ctx context.Context, in *CharData, opts ...grpc.CallOption) (*Character, error)
+	GetAll(ctx context.Context, in *DB, opts ...grpc.CallOption) (Characters_GetAllClient, error)
 }
 
 type charactersClient struct {
@@ -54,8 +54,8 @@ func (c *charactersClient) Create(ctx context.Context, in *Character, opts ...gr
 	return out, nil
 }
 
-func (c *charactersClient) Get(ctx context.Context, in *Identifier, opts ...grpc.CallOption) (*Character, error) {
-	out := new(Character)
+func (c *charactersClient) Get(ctx context.Context, in *CharData, opts ...grpc.CallOption) (*CharData, error) {
+	out := new(CharData)
 	err := c.cc.Invoke(ctx, Characters_Get_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func (c *charactersClient) Get(ctx context.Context, in *Identifier, opts ...grpc
 	return out, nil
 }
 
-func (c *charactersClient) Delete(ctx context.Context, in *Identifier, opts ...grpc.CallOption) (*Info, error) {
+func (c *charactersClient) Delete(ctx context.Context, in *CharData, opts ...grpc.CallOption) (*Info, error) {
 	out := new(Info)
 	err := c.cc.Invoke(ctx, Characters_Delete_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -72,7 +72,7 @@ func (c *charactersClient) Delete(ctx context.Context, in *Identifier, opts ...g
 	return out, nil
 }
 
-func (c *charactersClient) Update(ctx context.Context, in *CharEdit, opts ...grpc.CallOption) (*Character, error) {
+func (c *charactersClient) Update(ctx context.Context, in *CharData, opts ...grpc.CallOption) (*Character, error) {
 	out := new(Character)
 	err := c.cc.Invoke(ctx, Characters_Update_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -81,13 +81,36 @@ func (c *charactersClient) Update(ctx context.Context, in *CharEdit, opts ...grp
 	return out, nil
 }
 
-func (c *charactersClient) GetAll(ctx context.Context, in *DB, opts ...grpc.CallOption) (*CharList, error) {
-	out := new(CharList)
-	err := c.cc.Invoke(ctx, Characters_GetAll_FullMethodName, in, out, opts...)
+func (c *charactersClient) GetAll(ctx context.Context, in *DB, opts ...grpc.CallOption) (Characters_GetAllClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Characters_ServiceDesc.Streams[0], Characters_GetAll_FullMethodName, opts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &charactersGetAllClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Characters_GetAllClient interface {
+	Recv() (*CharData, error)
+	grpc.ClientStream
+}
+
+type charactersGetAllClient struct {
+	grpc.ClientStream
+}
+
+func (x *charactersGetAllClient) Recv() (*CharData, error) {
+	m := new(CharData)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 // CharactersServer is the server API for Characters service.
@@ -95,10 +118,10 @@ func (c *charactersClient) GetAll(ctx context.Context, in *DB, opts ...grpc.Call
 // for forward compatibility
 type CharactersServer interface {
 	Create(context.Context, *Character) (*Info, error)
-	Get(context.Context, *Identifier) (*Character, error)
-	Delete(context.Context, *Identifier) (*Info, error)
-	Update(context.Context, *CharEdit) (*Character, error)
-	GetAll(context.Context, *DB) (*CharList, error)
+	Get(context.Context, *CharData) (*CharData, error)
+	Delete(context.Context, *CharData) (*Info, error)
+	Update(context.Context, *CharData) (*Character, error)
+	GetAll(*DB, Characters_GetAllServer) error
 	mustEmbedUnimplementedCharactersServer()
 }
 
@@ -109,17 +132,17 @@ type UnimplementedCharactersServer struct {
 func (UnimplementedCharactersServer) Create(context.Context, *Character) (*Info, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedCharactersServer) Get(context.Context, *Identifier) (*Character, error) {
+func (UnimplementedCharactersServer) Get(context.Context, *CharData) (*CharData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedCharactersServer) Delete(context.Context, *Identifier) (*Info, error) {
+func (UnimplementedCharactersServer) Delete(context.Context, *CharData) (*Info, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedCharactersServer) Update(context.Context, *CharEdit) (*Character, error) {
+func (UnimplementedCharactersServer) Update(context.Context, *CharData) (*Character, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedCharactersServer) GetAll(context.Context, *DB) (*CharList, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
+func (UnimplementedCharactersServer) GetAll(*DB, Characters_GetAllServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetAll not implemented")
 }
 func (UnimplementedCharactersServer) mustEmbedUnimplementedCharactersServer() {}
 
@@ -153,7 +176,7 @@ func _Characters_Create_Handler(srv interface{}, ctx context.Context, dec func(i
 }
 
 func _Characters_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Identifier)
+	in := new(CharData)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -165,13 +188,13 @@ func _Characters_Get_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: Characters_Get_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CharactersServer).Get(ctx, req.(*Identifier))
+		return srv.(CharactersServer).Get(ctx, req.(*CharData))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Characters_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Identifier)
+	in := new(CharData)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -183,13 +206,13 @@ func _Characters_Delete_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: Characters_Delete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CharactersServer).Delete(ctx, req.(*Identifier))
+		return srv.(CharactersServer).Delete(ctx, req.(*CharData))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Characters_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CharEdit)
+	in := new(CharData)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -201,27 +224,30 @@ func _Characters_Update_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: Characters_Update_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CharactersServer).Update(ctx, req.(*CharEdit))
+		return srv.(CharactersServer).Update(ctx, req.(*CharData))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Characters_GetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DB)
-	if err := dec(in); err != nil {
-		return nil, err
+func _Characters_GetAll_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(DB)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(CharactersServer).GetAll(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Characters_GetAll_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CharactersServer).GetAll(ctx, req.(*DB))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(CharactersServer).GetAll(m, &charactersGetAllServer{stream})
+}
+
+type Characters_GetAllServer interface {
+	Send(*CharData) error
+	grpc.ServerStream
+}
+
+type charactersGetAllServer struct {
+	grpc.ServerStream
+}
+
+func (x *charactersGetAllServer) Send(m *CharData) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 // Characters_ServiceDesc is the grpc.ServiceDesc for Characters service.
@@ -247,11 +273,13 @@ var Characters_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "Update",
 			Handler:    _Characters_Update_Handler,
 		},
+	},
+	Streams: []grpc.StreamDesc{
 		{
-			MethodName: "GetAll",
-			Handler:    _Characters_GetAll_Handler,
+			StreamName:    "GetAll",
+			Handler:       _Characters_GetAll_Handler,
+			ServerStreams: true,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
 	Metadata: "proto/character.proto",
 }

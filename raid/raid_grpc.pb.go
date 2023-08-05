@@ -30,9 +30,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RaidsClient interface {
 	Create(ctx context.Context, in *Raid, opts ...grpc.CallOption) (*Info, error)
-	Get(ctx context.Context, in *Identifier, opts ...grpc.CallOption) (*Raid, error)
+	Get(ctx context.Context, in *RaidIn, opts ...grpc.CallOption) (*RaidOut, error)
 	Enter(ctx context.Context, opts ...grpc.CallOption) (Raids_EnterClient, error)
-	Leave(ctx context.Context, in *Identifier, opts ...grpc.CallOption) (*Info, error)
+	Leave(ctx context.Context, in *RaidIn, opts ...grpc.CallOption) (*Info, error)
 }
 
 type raidsClient struct {
@@ -52,8 +52,8 @@ func (c *raidsClient) Create(ctx context.Context, in *Raid, opts ...grpc.CallOpt
 	return out, nil
 }
 
-func (c *raidsClient) Get(ctx context.Context, in *Identifier, opts ...grpc.CallOption) (*Raid, error) {
-	out := new(Raid)
+func (c *raidsClient) Get(ctx context.Context, in *RaidIn, opts ...grpc.CallOption) (*RaidOut, error) {
+	out := new(RaidOut)
 	err := c.cc.Invoke(ctx, Raids_Get_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -72,7 +72,7 @@ func (c *raidsClient) Enter(ctx context.Context, opts ...grpc.CallOption) (Raids
 
 type Raids_EnterClient interface {
 	Send(*Entry) error
-	Recv() (*Raid, error)
+	Recv() (*Info, error)
 	grpc.ClientStream
 }
 
@@ -84,15 +84,15 @@ func (x *raidsEnterClient) Send(m *Entry) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *raidsEnterClient) Recv() (*Raid, error) {
-	m := new(Raid)
+func (x *raidsEnterClient) Recv() (*Info, error) {
+	m := new(Info)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-func (c *raidsClient) Leave(ctx context.Context, in *Identifier, opts ...grpc.CallOption) (*Info, error) {
+func (c *raidsClient) Leave(ctx context.Context, in *RaidIn, opts ...grpc.CallOption) (*Info, error) {
 	out := new(Info)
 	err := c.cc.Invoke(ctx, Raids_Leave_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -106,9 +106,9 @@ func (c *raidsClient) Leave(ctx context.Context, in *Identifier, opts ...grpc.Ca
 // for forward compatibility
 type RaidsServer interface {
 	Create(context.Context, *Raid) (*Info, error)
-	Get(context.Context, *Identifier) (*Raid, error)
+	Get(context.Context, *RaidIn) (*RaidOut, error)
 	Enter(Raids_EnterServer) error
-	Leave(context.Context, *Identifier) (*Info, error)
+	Leave(context.Context, *RaidIn) (*Info, error)
 	mustEmbedUnimplementedRaidsServer()
 }
 
@@ -119,13 +119,13 @@ type UnimplementedRaidsServer struct {
 func (UnimplementedRaidsServer) Create(context.Context, *Raid) (*Info, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedRaidsServer) Get(context.Context, *Identifier) (*Raid, error) {
+func (UnimplementedRaidsServer) Get(context.Context, *RaidIn) (*RaidOut, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
 func (UnimplementedRaidsServer) Enter(Raids_EnterServer) error {
 	return status.Errorf(codes.Unimplemented, "method Enter not implemented")
 }
-func (UnimplementedRaidsServer) Leave(context.Context, *Identifier) (*Info, error) {
+func (UnimplementedRaidsServer) Leave(context.Context, *RaidIn) (*Info, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Leave not implemented")
 }
 func (UnimplementedRaidsServer) mustEmbedUnimplementedRaidsServer() {}
@@ -160,7 +160,7 @@ func _Raids_Create_Handler(srv interface{}, ctx context.Context, dec func(interf
 }
 
 func _Raids_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Identifier)
+	in := new(RaidIn)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -172,7 +172,7 @@ func _Raids_Get_Handler(srv interface{}, ctx context.Context, dec func(interface
 		FullMethod: Raids_Get_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RaidsServer).Get(ctx, req.(*Identifier))
+		return srv.(RaidsServer).Get(ctx, req.(*RaidIn))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -182,7 +182,7 @@ func _Raids_Enter_Handler(srv interface{}, stream grpc.ServerStream) error {
 }
 
 type Raids_EnterServer interface {
-	Send(*Raid) error
+	Send(*Info) error
 	Recv() (*Entry, error)
 	grpc.ServerStream
 }
@@ -191,7 +191,7 @@ type raidsEnterServer struct {
 	grpc.ServerStream
 }
 
-func (x *raidsEnterServer) Send(m *Raid) error {
+func (x *raidsEnterServer) Send(m *Info) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -204,7 +204,7 @@ func (x *raidsEnterServer) Recv() (*Entry, error) {
 }
 
 func _Raids_Leave_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Identifier)
+	in := new(RaidIn)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -216,7 +216,7 @@ func _Raids_Leave_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		FullMethod: Raids_Leave_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RaidsServer).Leave(ctx, req.(*Identifier))
+		return srv.(RaidsServer).Leave(ctx, req.(*RaidIn))
 	}
 	return interceptor(ctx, in, info, handler)
 }

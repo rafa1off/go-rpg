@@ -5,9 +5,8 @@ package character;
 option go_package = "./character";
 
 message Character {
-  int64 id = 1;
-  string name = 2;
-  int64 health = 3;
+  string name = 1;
+  int32 health = 2;
 
   enum Race {
     HUMAN = 0;
@@ -16,7 +15,7 @@ message Character {
     ORC = 3;
   }
 
-  Race race = 4;
+  Race race = 3;
 
   enum Class {
     HUNTER = 0;
@@ -24,35 +23,28 @@ message Character {
     MAGE = 2;
   }
 
-  Class class = 5;
+  Class class = 4;
 }
 
-message Identifier {
-  int64 id = 1;
+message CharData {
+  int32 id = 1;
+  optional Character char = 2;
 }
 
 message Info {
   string details = 1;
-}
-
-message CharList {
-  repeated Character char = 1;
-}
-
-message CharEdit {
-  Character data = 1;
-  Identifier id = 2;
+  optional Character char = 2;
 }
 
 message DB {
-  string db = 1;
+  optional string db = 1;
 }
 
 service Characters {
   rpc Create (Character) returns (Info);
-  rpc Get (Identifier) returns (Character);
-  rpc Delete (Identifier) returns (Info);
-  rpc Update (CharEdit) returns (Character);
-  rpc GetAll (DB) returns (CharList);
+  rpc Get (CharData) returns (CharData);
+  rpc Delete (CharData) returns (Info);
+  rpc Update (CharData) returns (Character);
+  rpc GetAll (DB) returns (stream CharData);
 }
 

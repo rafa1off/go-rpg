@@ -13,38 +13,40 @@ type Server struct {
 	UnimplementedCharactersServer
 }
 
-func (s *Server) Create(ctx context.Context, c *Character) (*Info, error) {
-	char := Character{
-		Id:     c.Id,
-		Name:   c.Name,
-		Class:  c.Class,
-		Race:   c.Race,
-		Health: c.Health,
+func (s *Server) Create(_ context.Context, c *Character) (*Info, error) {
+	char := CharData{
+		Char: c,
 	}
 	char.Save()
 
 	info := Info{
-		Details: "Character: " + char.Name + " created",
+		Details: "Character: " + c.Name + " created",
 	}
 
-	go setup.Logger.Info("Character: " + char.Name + " created")
+	go setup.Logger.Info("Character: " + c.Name + " created")
 	return &info, nil
 }
 
-func (s *Server) Get(ctx context.Context, id *Identifier) (*Character, error) {
-	char, err := Get(id.Id)
+func (s *Server) Get(_ context.Context, data *CharData) (*CharData, error) {
+	char, err := Get(data.Id)
 	if err != nil {
 		go setup.Logger.Error("not found",
 			zap.String("details", status.Errorf(codes.NotFound, "id not found").Error()),
 		)
 		return nil, status.Errorf(codes.NotFound, "id not found")
 	}
+
+	res := CharData{
+		Id:   data.Id,
+		Char: char,
+	}
+
 	go setup.Logger.Info("Character: " + char.Name + " returned")
-	return char, nil
+	return &res, nil
 }
 
-func (s *Server) Delete(ctx context.Context, id *Identifier) (*Info, error) {
-	if err := Delete(id.Id); err != nil {
+func (s *Server) Delete(_ context.Context, data *CharData) (*Info, error) {
+	if err := Delete(data.Id); err != nil {
 		go setup.Logger.Error("not found",
 			zap.String("details", status.Errorf(codes.NotFound, "id not found").Error()),
 		)
@@ -54,27 +56,38 @@ func (s *Server) Delete(ctx context.Context, id *Identifier) (*Info, error) {
 	info := Info{
 		Details: "Char deleted",
 	}
+
 	go setup.Logger.Info("Character deleted")
 	return &info, nil
 }
 
-func (s *Server) Update(ctx context.Context, char *CharEdit) (*Character, error) {
-	err := char.Data.Update(char.Id.Id)
+func (s *Server) Update(_ context.Context, data *CharData) (*Character, error) {
+	item := CharData{
+		Char: data.Char,
+	}
+
+	err := item.Update(data.Id)
 	if err != nil {
 		go setup.Logger.Error("not found",
 			zap.String("details", status.Errorf(codes.NotFound, "id not found").Error()),
 		)
 		return nil, status.Errorf(codes.NotFound, "id not found")
 	}
-	go setup.Logger.Info("Character: " + char.Data.Name + " updated")
-	return char.Data, nil
+
+	go setup.Logger.Info("Character: " + item.Char.Name + " updated")
+	return item.Char, nil
 }
 
-func (s *Server) GetAll(ctx context.Context, db *DB) (*CharList, error) {
-	list := CharList{
-		Char: FakeDB,
+func (s *Server) GetAll(db *DB, stream Characters_GetAllServer) error {
+	for _, i := range FakeDB {
+		if err := stream.Send(i); err != nil {
+			go setup.Logger.Error("error sending stream",
+				zap.String("details", err.Error()),
+			)
+			return err
+		}
 	}
 
 	go setup.Logger.Info("Characters returned")
-	return &list, nil
+	return nil
 }

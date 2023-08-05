@@ -20,7 +20,8 @@ func main() {
 		log.Println("error initializing logger: " + err.Error())
 	}
 
-	lis := initListener()
+	lis := make(chan net.Listener)
+	go initListener(lis)
 
 	server := grpc.NewServer()
 
@@ -29,19 +30,21 @@ func main() {
 
 	reflection.Register(server)
 
-	setup.Logger.Info("server listening on: http://localhost:" + strconv.Itoa(defaultPort))
-	if err := server.Serve(lis); err != nil {
+	go setup.Logger.Info("server listening on: http://localhost:" + strconv.Itoa(defaultPort))
+	if err := server.Serve(<-lis); err != nil {
 		go setup.Logger.Error("error listening network",
 			zap.String("error", err.Error()),
 		)
 	}
 }
 
-func initListener() net.Listener {
+func initListener(c chan<- net.Listener) {
 	lis, err := net.Listen("tcp", "0.0.0.0:"+strconv.Itoa(defaultPort))
 	if err != nil {
 		go setup.Logger.Error("error listening network",
 			zap.String("details", err.Error()))
+		c <- nil
+		return
 	}
-	return lis
+	c <- lis
 }
