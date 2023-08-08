@@ -192,17 +192,16 @@ func (x *Character) GetClass() Character_Class {
 	return Character_HUNTER
 }
 
-type CharData struct {
+type CharCreateReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Char *Character `protobuf:"bytes,2,opt,name=char,proto3,oneof" json:"char,omitempty"`
+	Char *Character `protobuf:"bytes,1,opt,name=char,proto3" json:"char,omitempty"`
 }
 
-func (x *CharData) Reset() {
-	*x = CharData{}
+func (x *CharCreateReq) Reset() {
+	*x = CharCreateReq{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_proto_character_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -210,13 +209,13 @@ func (x *CharData) Reset() {
 	}
 }
 
-func (x *CharData) String() string {
+func (x *CharCreateReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CharData) ProtoMessage() {}
+func (*CharCreateReq) ProtoMessage() {}
 
-func (x *CharData) ProtoReflect() protoreflect.Message {
+func (x *CharCreateReq) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_character_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -228,36 +227,29 @@ func (x *CharData) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CharData.ProtoReflect.Descriptor instead.
-func (*CharData) Descriptor() ([]byte, []int) {
+// Deprecated: Use CharCreateReq.ProtoReflect.Descriptor instead.
+func (*CharCreateReq) Descriptor() ([]byte, []int) {
 	return file_proto_character_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CharData) GetId() int32 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-func (x *CharData) GetChar() *Character {
+func (x *CharCreateReq) GetChar() *Character {
 	if x != nil {
 		return x.Char
 	}
 	return nil
 }
 
-type Info struct {
+type CharCreateRes struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Details string     `protobuf:"bytes,1,opt,name=details,proto3" json:"details,omitempty"`
-	Char    *Character `protobuf:"bytes,2,opt,name=char,proto3,oneof" json:"char,omitempty"`
+	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Char *Character `protobuf:"bytes,2,opt,name=char,proto3" json:"char,omitempty"`
 }
 
-func (x *Info) Reset() {
-	*x = Info{}
+func (x *CharCreateRes) Reset() {
+	*x = CharCreateRes{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_proto_character_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -265,13 +257,13 @@ func (x *Info) Reset() {
 	}
 }
 
-func (x *Info) String() string {
+func (x *CharCreateRes) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Info) ProtoMessage() {}
+func (*CharCreateRes) ProtoMessage() {}
 
-func (x *Info) ProtoReflect() protoreflect.Message {
+func (x *CharCreateRes) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_character_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -283,35 +275,36 @@ func (x *Info) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Info.ProtoReflect.Descriptor instead.
-func (*Info) Descriptor() ([]byte, []int) {
+// Deprecated: Use CharCreateRes.ProtoReflect.Descriptor instead.
+func (*CharCreateRes) Descriptor() ([]byte, []int) {
 	return file_proto_character_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *Info) GetDetails() string {
+func (x *CharCreateRes) GetId() int32 {
 	if x != nil {
-		return x.Details
+		return x.Id
 	}
-	return ""
+	return 0
 }
 
-func (x *Info) GetChar() *Character {
+func (x *CharCreateRes) GetChar() *Character {
 	if x != nil {
 		return x.Char
 	}
 	return nil
 }
 
-type DB struct {
+type CharGetReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Db *string `protobuf:"bytes,1,opt,name=db,proto3,oneof" json:"db,omitempty"`
+	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Char *Character `protobuf:"bytes,2,opt,name=char,proto3" json:"char,omitempty"`
 }
 
-func (x *DB) Reset() {
-	*x = DB{}
+func (x *CharGetReq) Reset() {
+	*x = CharGetReq{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_proto_character_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -319,13 +312,13 @@ func (x *DB) Reset() {
 	}
 }
 
-func (x *DB) String() string {
+func (x *CharGetReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DB) ProtoMessage() {}
+func (*CharGetReq) ProtoMessage() {}
 
-func (x *DB) ProtoReflect() protoreflect.Message {
+func (x *CharGetReq) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_character_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -337,16 +330,383 @@ func (x *DB) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DB.ProtoReflect.Descriptor instead.
-func (*DB) Descriptor() ([]byte, []int) {
+// Deprecated: Use CharGetReq.ProtoReflect.Descriptor instead.
+func (*CharGetReq) Descriptor() ([]byte, []int) {
 	return file_proto_character_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *DB) GetDb() string {
-	if x != nil && x.Db != nil {
-		return *x.Db
+func (x *CharGetReq) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *CharGetReq) GetChar() *Character {
+	if x != nil {
+		return x.Char
+	}
+	return nil
+}
+
+type CharGetRes struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Char *Character `protobuf:"bytes,2,opt,name=char,proto3" json:"char,omitempty"`
+}
+
+func (x *CharGetRes) Reset() {
+	*x = CharGetRes{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_character_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CharGetRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CharGetRes) ProtoMessage() {}
+
+func (x *CharGetRes) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_character_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CharGetRes.ProtoReflect.Descriptor instead.
+func (*CharGetRes) Descriptor() ([]byte, []int) {
+	return file_proto_character_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *CharGetRes) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *CharGetRes) GetChar() *Character {
+	if x != nil {
+		return x.Char
+	}
+	return nil
+}
+
+type CharDeleteReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id int32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *CharDeleteReq) Reset() {
+	*x = CharDeleteReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_character_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CharDeleteReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CharDeleteReq) ProtoMessage() {}
+
+func (x *CharDeleteReq) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_character_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CharDeleteReq.ProtoReflect.Descriptor instead.
+func (*CharDeleteReq) Descriptor() ([]byte, []int) {
+	return file_proto_character_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *CharDeleteReq) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type CharDeleteRes struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Details string     `protobuf:"bytes,1,opt,name=details,proto3" json:"details,omitempty"`
+	Char    *Character `protobuf:"bytes,2,opt,name=char,proto3,oneof" json:"char,omitempty"`
+}
+
+func (x *CharDeleteRes) Reset() {
+	*x = CharDeleteRes{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_character_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CharDeleteRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CharDeleteRes) ProtoMessage() {}
+
+func (x *CharDeleteRes) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_character_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CharDeleteRes.ProtoReflect.Descriptor instead.
+func (*CharDeleteRes) Descriptor() ([]byte, []int) {
+	return file_proto_character_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *CharDeleteRes) GetDetails() string {
+	if x != nil {
+		return x.Details
 	}
 	return ""
+}
+
+func (x *CharDeleteRes) GetChar() *Character {
+	if x != nil {
+		return x.Char
+	}
+	return nil
+}
+
+type CharUpdateReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Char *Character `protobuf:"bytes,2,opt,name=char,proto3" json:"char,omitempty"`
+}
+
+func (x *CharUpdateReq) Reset() {
+	*x = CharUpdateReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_character_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CharUpdateReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CharUpdateReq) ProtoMessage() {}
+
+func (x *CharUpdateReq) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_character_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CharUpdateReq.ProtoReflect.Descriptor instead.
+func (*CharUpdateReq) Descriptor() ([]byte, []int) {
+	return file_proto_character_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *CharUpdateReq) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *CharUpdateReq) GetChar() *Character {
+	if x != nil {
+		return x.Char
+	}
+	return nil
+}
+
+type CharUpdateRes struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Char *Character `protobuf:"bytes,2,opt,name=char,proto3" json:"char,omitempty"`
+}
+
+func (x *CharUpdateRes) Reset() {
+	*x = CharUpdateRes{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_character_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CharUpdateRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CharUpdateRes) ProtoMessage() {}
+
+func (x *CharUpdateRes) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_character_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CharUpdateRes.ProtoReflect.Descriptor instead.
+func (*CharUpdateRes) Descriptor() ([]byte, []int) {
+	return file_proto_character_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *CharUpdateRes) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *CharUpdateRes) GetChar() *Character {
+	if x != nil {
+		return x.Char
+	}
+	return nil
+}
+
+type GetAllReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *GetAllReq) Reset() {
+	*x = GetAllReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_character_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllReq) ProtoMessage() {}
+
+func (x *GetAllReq) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_character_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllReq.ProtoReflect.Descriptor instead.
+func (*GetAllReq) Descriptor() ([]byte, []int) {
+	return file_proto_character_proto_rawDescGZIP(), []int{9}
+}
+
+type GetAllRes struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Char *Character `protobuf:"bytes,2,opt,name=char,proto3" json:"char,omitempty"`
+}
+
+func (x *GetAllRes) Reset() {
+	*x = GetAllRes{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_character_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllRes) ProtoMessage() {}
+
+func (x *GetAllRes) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_character_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllRes.ProtoReflect.Descriptor instead.
+func (*GetAllRes) Descriptor() ([]byte, []int) {
+	return file_proto_character_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *GetAllRes) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *GetAllRes) GetChar() *Character {
+	if x != nil {
+		return x.Char
+	}
+	return nil
 }
 
 var File_proto_character_proto protoreflect.FileDescriptor
@@ -369,38 +729,68 @@ var file_proto_character_proto_rawDesc = []byte{
 	0x52, 0x46, 0x10, 0x02, 0x12, 0x07, 0x0a, 0x03, 0x4f, 0x52, 0x43, 0x10, 0x03, 0x22, 0x2a, 0x0a,
 	0x05, 0x43, 0x6c, 0x61, 0x73, 0x73, 0x12, 0x0a, 0x0a, 0x06, 0x48, 0x55, 0x4e, 0x54, 0x45, 0x52,
 	0x10, 0x00, 0x12, 0x0b, 0x0a, 0x07, 0x57, 0x41, 0x52, 0x52, 0x49, 0x4f, 0x52, 0x10, 0x01, 0x12,
-	0x08, 0x0a, 0x04, 0x4d, 0x41, 0x47, 0x45, 0x10, 0x02, 0x22, 0x52, 0x0a, 0x08, 0x43, 0x68, 0x61,
-	0x72, 0x44, 0x61, 0x74, 0x61, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x05, 0x52, 0x02, 0x69, 0x64, 0x12, 0x2d, 0x0a, 0x04, 0x63, 0x68, 0x61, 0x72, 0x18, 0x02, 0x20,
+	0x08, 0x0a, 0x04, 0x4d, 0x41, 0x47, 0x45, 0x10, 0x02, 0x22, 0x39, 0x0a, 0x0d, 0x43, 0x68, 0x61,
+	0x72, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x12, 0x28, 0x0a, 0x04, 0x63, 0x68,
+	0x61, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61,
+	0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x52, 0x04,
+	0x63, 0x68, 0x61, 0x72, 0x22, 0x49, 0x0a, 0x0d, 0x43, 0x68, 0x61, 0x72, 0x43, 0x72, 0x65, 0x61,
+	0x74, 0x65, 0x52, 0x65, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x05, 0x52, 0x02, 0x69, 0x64, 0x12, 0x28, 0x0a, 0x04, 0x63, 0x68, 0x61, 0x72, 0x18, 0x02, 0x20,
 	0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e,
-	0x43, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x48, 0x00, 0x52, 0x04, 0x63, 0x68, 0x61,
-	0x72, 0x88, 0x01, 0x01, 0x42, 0x07, 0x0a, 0x05, 0x5f, 0x63, 0x68, 0x61, 0x72, 0x22, 0x58, 0x0a,
-	0x04, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x18, 0x0a, 0x07, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x12,
-	0x2d, 0x0a, 0x04, 0x63, 0x68, 0x61, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e,
+	0x43, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x52, 0x04, 0x63, 0x68, 0x61, 0x72, 0x22,
+	0x46, 0x0a, 0x0a, 0x43, 0x68, 0x61, 0x72, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a,
+	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x02, 0x69, 0x64, 0x12, 0x28, 0x0a,
+	0x04, 0x63, 0x68, 0x61, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x63, 0x68,
+	0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65,
+	0x72, 0x52, 0x04, 0x63, 0x68, 0x61, 0x72, 0x22, 0x46, 0x0a, 0x0a, 0x43, 0x68, 0x61, 0x72, 0x47,
+	0x65, 0x74, 0x52, 0x65, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x05, 0x52, 0x02, 0x69, 0x64, 0x12, 0x28, 0x0a, 0x04, 0x63, 0x68, 0x61, 0x72, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e,
+	0x43, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x52, 0x04, 0x63, 0x68, 0x61, 0x72, 0x22,
+	0x1f, 0x0a, 0x0d, 0x43, 0x68, 0x61, 0x72, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x71,
+	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x02, 0x69, 0x64,
+	0x22, 0x61, 0x0a, 0x0d, 0x43, 0x68, 0x61, 0x72, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65,
+	0x73, 0x12, 0x18, 0x0a, 0x07, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x12, 0x2d, 0x0a, 0x04, 0x63,
+	0x68, 0x61, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x63, 0x68, 0x61, 0x72,
+	0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x48,
+	0x00, 0x52, 0x04, 0x63, 0x68, 0x61, 0x72, 0x88, 0x01, 0x01, 0x42, 0x07, 0x0a, 0x05, 0x5f, 0x63,
+	0x68, 0x61, 0x72, 0x22, 0x49, 0x0a, 0x0d, 0x43, 0x68, 0x61, 0x72, 0x55, 0x70, 0x64, 0x61, 0x74,
+	0x65, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05,
+	0x52, 0x02, 0x69, 0x64, 0x12, 0x28, 0x0a, 0x04, 0x63, 0x68, 0x61, 0x72, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x14, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x43,
+	0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x52, 0x04, 0x63, 0x68, 0x61, 0x72, 0x22, 0x49,
+	0x0a, 0x0d, 0x43, 0x68, 0x61, 0x72, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x12,
+	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x02, 0x69, 0x64, 0x12,
+	0x28, 0x0a, 0x04, 0x63, 0x68, 0x61, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e,
 	0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68, 0x61, 0x72, 0x61, 0x63,
-	0x74, 0x65, 0x72, 0x48, 0x00, 0x52, 0x04, 0x63, 0x68, 0x61, 0x72, 0x88, 0x01, 0x01, 0x42, 0x07,
-	0x0a, 0x05, 0x5f, 0x63, 0x68, 0x61, 0x72, 0x22, 0x20, 0x0a, 0x02, 0x44, 0x42, 0x12, 0x13, 0x0a,
-	0x02, 0x64, 0x62, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x02, 0x64, 0x62, 0x88,
-	0x01, 0x01, 0x42, 0x05, 0x0a, 0x03, 0x5f, 0x64, 0x62, 0x32, 0x83, 0x02, 0x0a, 0x0a, 0x43, 0x68,
-	0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x73, 0x12, 0x2f, 0x0a, 0x06, 0x43, 0x72, 0x65, 0x61,
-	0x74, 0x65, 0x12, 0x14, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x43,
-	0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x1a, 0x0f, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61,
-	0x63, 0x74, 0x65, 0x72, 0x2e, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x2f, 0x0a, 0x03, 0x47, 0x65, 0x74,
-	0x12, 0x13, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68, 0x61,
-	0x72, 0x44, 0x61, 0x74, 0x61, 0x1a, 0x13, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65,
-	0x72, 0x2e, 0x43, 0x68, 0x61, 0x72, 0x44, 0x61, 0x74, 0x61, 0x12, 0x2e, 0x0a, 0x06, 0x44, 0x65,
-	0x6c, 0x65, 0x74, 0x65, 0x12, 0x13, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72,
-	0x2e, 0x43, 0x68, 0x61, 0x72, 0x44, 0x61, 0x74, 0x61, 0x1a, 0x0f, 0x2e, 0x63, 0x68, 0x61, 0x72,
-	0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x33, 0x0a, 0x06, 0x55, 0x70,
-	0x64, 0x61, 0x74, 0x65, 0x12, 0x13, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72,
-	0x2e, 0x43, 0x68, 0x61, 0x72, 0x44, 0x61, 0x74, 0x61, 0x1a, 0x14, 0x2e, 0x63, 0x68, 0x61, 0x72,
-	0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x12,
-	0x2e, 0x0a, 0x06, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x12, 0x0d, 0x2e, 0x63, 0x68, 0x61, 0x72,
-	0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x44, 0x42, 0x1a, 0x13, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61,
-	0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68, 0x61, 0x72, 0x44, 0x61, 0x74, 0x61, 0x30, 0x01, 0x42,
-	0x0d, 0x5a, 0x0b, 0x2e, 0x2f, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x65, 0x72, 0x52, 0x04, 0x63, 0x68, 0x61, 0x72, 0x22, 0x0b, 0x0a, 0x09, 0x47, 0x65, 0x74,
+	0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x22, 0x45, 0x0a, 0x09, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c,
+	0x52, 0x65, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52,
+	0x02, 0x69, 0x64, 0x12, 0x28, 0x0a, 0x04, 0x63, 0x68, 0x61, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x14, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68,
+	0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x52, 0x04, 0x63, 0x68, 0x61, 0x72, 0x32, 0xb3, 0x02,
+	0x0a, 0x0a, 0x43, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x73, 0x12, 0x3c, 0x0a, 0x06,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x18, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74,
+	0x65, 0x72, 0x2e, 0x43, 0x68, 0x61, 0x72, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71,
+	0x1a, 0x18, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68, 0x61,
+	0x72, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x12, 0x33, 0x0a, 0x03, 0x47, 0x65,
+	0x74, 0x12, 0x15, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68,
+	0x61, 0x72, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61,
+	0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68, 0x61, 0x72, 0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x12,
+	0x3c, 0x0a, 0x06, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x18, 0x2e, 0x63, 0x68, 0x61, 0x72,
+	0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68, 0x61, 0x72, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
+	0x52, 0x65, 0x71, 0x1a, 0x18, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e,
+	0x43, 0x68, 0x61, 0x72, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x12, 0x3c, 0x0a,
+	0x06, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x18, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63,
+	0x74, 0x65, 0x72, 0x2e, 0x43, 0x68, 0x61, 0x72, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65,
+	0x71, 0x1a, 0x18, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x43, 0x68,
+	0x61, 0x72, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x12, 0x36, 0x0a, 0x06, 0x47,
+	0x65, 0x74, 0x41, 0x6c, 0x6c, 0x12, 0x14, 0x2e, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65,
+	0x72, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x1a, 0x14, 0x2e, 0x63, 0x68,
+	0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65,
+	0x73, 0x30, 0x01, 0x42, 0x0c, 0x5a, 0x0a, 0x2f, 0x63, 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65,
+	0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -416,35 +806,48 @@ func file_proto_character_proto_rawDescGZIP() []byte {
 }
 
 var file_proto_character_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_proto_character_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_proto_character_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_proto_character_proto_goTypes = []interface{}{
-	(Character_Race)(0),  // 0: character.Character.Race
-	(Character_Class)(0), // 1: character.Character.Class
-	(*Character)(nil),    // 2: character.Character
-	(*CharData)(nil),     // 3: character.CharData
-	(*Info)(nil),         // 4: character.Info
-	(*DB)(nil),           // 5: character.DB
+	(Character_Race)(0),   // 0: character.Character.Race
+	(Character_Class)(0),  // 1: character.Character.Class
+	(*Character)(nil),     // 2: character.Character
+	(*CharCreateReq)(nil), // 3: character.CharCreateReq
+	(*CharCreateRes)(nil), // 4: character.CharCreateRes
+	(*CharGetReq)(nil),    // 5: character.CharGetReq
+	(*CharGetRes)(nil),    // 6: character.CharGetRes
+	(*CharDeleteReq)(nil), // 7: character.CharDeleteReq
+	(*CharDeleteRes)(nil), // 8: character.CharDeleteRes
+	(*CharUpdateReq)(nil), // 9: character.CharUpdateReq
+	(*CharUpdateRes)(nil), // 10: character.CharUpdateRes
+	(*GetAllReq)(nil),     // 11: character.GetAllReq
+	(*GetAllRes)(nil),     // 12: character.GetAllRes
 }
 var file_proto_character_proto_depIdxs = []int32{
-	0, // 0: character.Character.race:type_name -> character.Character.Race
-	1, // 1: character.Character.class:type_name -> character.Character.Class
-	2, // 2: character.CharData.char:type_name -> character.Character
-	2, // 3: character.Info.char:type_name -> character.Character
-	2, // 4: character.Characters.Create:input_type -> character.Character
-	3, // 5: character.Characters.Get:input_type -> character.CharData
-	3, // 6: character.Characters.Delete:input_type -> character.CharData
-	3, // 7: character.Characters.Update:input_type -> character.CharData
-	5, // 8: character.Characters.GetAll:input_type -> character.DB
-	4, // 9: character.Characters.Create:output_type -> character.Info
-	3, // 10: character.Characters.Get:output_type -> character.CharData
-	4, // 11: character.Characters.Delete:output_type -> character.Info
-	2, // 12: character.Characters.Update:output_type -> character.Character
-	3, // 13: character.Characters.GetAll:output_type -> character.CharData
-	9, // [9:14] is the sub-list for method output_type
-	4, // [4:9] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	0,  // 0: character.Character.race:type_name -> character.Character.Race
+	1,  // 1: character.Character.class:type_name -> character.Character.Class
+	2,  // 2: character.CharCreateReq.char:type_name -> character.Character
+	2,  // 3: character.CharCreateRes.char:type_name -> character.Character
+	2,  // 4: character.CharGetReq.char:type_name -> character.Character
+	2,  // 5: character.CharGetRes.char:type_name -> character.Character
+	2,  // 6: character.CharDeleteRes.char:type_name -> character.Character
+	2,  // 7: character.CharUpdateReq.char:type_name -> character.Character
+	2,  // 8: character.CharUpdateRes.char:type_name -> character.Character
+	2,  // 9: character.GetAllRes.char:type_name -> character.Character
+	3,  // 10: character.Characters.Create:input_type -> character.CharCreateReq
+	5,  // 11: character.Characters.Get:input_type -> character.CharGetReq
+	7,  // 12: character.Characters.Delete:input_type -> character.CharDeleteReq
+	9,  // 13: character.Characters.Update:input_type -> character.CharUpdateReq
+	11, // 14: character.Characters.GetAll:input_type -> character.GetAllReq
+	4,  // 15: character.Characters.Create:output_type -> character.CharCreateRes
+	6,  // 16: character.Characters.Get:output_type -> character.CharGetRes
+	8,  // 17: character.Characters.Delete:output_type -> character.CharDeleteRes
+	10, // 18: character.Characters.Update:output_type -> character.CharUpdateRes
+	12, // 19: character.Characters.GetAll:output_type -> character.GetAllRes
+	15, // [15:20] is the sub-list for method output_type
+	10, // [10:15] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_proto_character_proto_init() }
@@ -466,7 +869,7 @@ func file_proto_character_proto_init() {
 			}
 		}
 		file_proto_character_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CharData); i {
+			switch v := v.(*CharCreateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -478,7 +881,7 @@ func file_proto_character_proto_init() {
 			}
 		}
 		file_proto_character_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Info); i {
+			switch v := v.(*CharCreateRes); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -490,7 +893,91 @@ func file_proto_character_proto_init() {
 			}
 		}
 		file_proto_character_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DB); i {
+			switch v := v.(*CharGetReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_character_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CharGetRes); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_character_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CharDeleteReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_character_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CharDeleteRes); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_character_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CharUpdateReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_character_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CharUpdateRes); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_character_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAllReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_character_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAllRes); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -502,16 +989,14 @@ func file_proto_character_proto_init() {
 			}
 		}
 	}
-	file_proto_character_proto_msgTypes[1].OneofWrappers = []interface{}{}
-	file_proto_character_proto_msgTypes[2].OneofWrappers = []interface{}{}
-	file_proto_character_proto_msgTypes[3].OneofWrappers = []interface{}{}
+	file_proto_character_proto_msgTypes[6].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_character_proto_rawDesc,
 			NumEnums:      2,
-			NumMessages:   4,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
