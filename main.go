@@ -8,7 +8,6 @@ import (
 	"net"
 	"strconv"
 
-	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -23,28 +22,28 @@ func main() {
 	lis := make(chan net.Listener)
 	go initListener(lis)
 
-	server := grpc.NewServer()
-
-	character.RegisterCharactersServer(server, &character.Server{})
-	raid.RegisterRaidsServer(server, &raid.Server{})
-
-	reflection.Register(server)
+	server := initServer()
 
 	go setup.Logger.Info("server listening on: http://localhost:" + strconv.Itoa(defaultPort))
-	if err := server.Serve(<-lis); err != nil {
-		go setup.Logger.Error("error listening network",
-			zap.String("error", err.Error()),
-		)
-	}
+	setup.Logger.Sugar().Fatal(server.Serve(<-lis))
 }
 
 func initListener(c chan<- net.Listener) {
 	lis, err := net.Listen("tcp", "0.0.0.0:"+strconv.Itoa(defaultPort))
 	if err != nil {
-		go setup.Logger.Error("error listening network",
-			zap.String("details", err.Error()))
 		c <- nil
 		return
 	}
 	c <- lis
+}
+
+func initServer() *grpc.Server {
+	srv := grpc.NewServer()
+
+	character.RegisterCharactersServer(srv, &character.Server{})
+	raid.RegisterRaidsServer(srv, &raid.Server{})
+
+	reflection.Register(srv)
+
+	return srv
 }

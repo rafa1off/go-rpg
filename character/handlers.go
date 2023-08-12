@@ -16,26 +16,19 @@ type Server struct {
 }
 
 func (s *Server) Create(_ context.Context, req *CharCreateReq) (*CharCreateRes, error) {
-	newEntry := char{
-		char: req.Char,
-	}
+	item := s.db.Save(req.Char)
 
-	item := s.db.Save(newEntry.char)
-
-	info := CharCreateRes{
+	res := CharCreateRes{
 		Id:   item.id,
 		Char: item.char,
 	}
 
-	return &info, nil
+	return &res, nil
 }
 
 func (s *Server) Get(_ context.Context, req *CharGetReq) (*CharGetRes, error) {
 	char, err := s.db.Get(req.Id)
 	if err != nil {
-		go setup.Logger.Error("not found",
-			zap.String("details :", status.Errorf(codes.NotFound, "id not found").Error()),
-		)
 		return nil, status.Errorf(codes.NotFound, "id not found")
 	}
 
@@ -49,9 +42,6 @@ func (s *Server) Get(_ context.Context, req *CharGetReq) (*CharGetRes, error) {
 
 func (s *Server) Delete(_ context.Context, req *CharDeleteReq) (*CharDeleteRes, error) {
 	if err := s.db.Delete(req.Id); err != nil {
-		go setup.Logger.Error("not found",
-			zap.String("details", status.Errorf(codes.NotFound, "id not found").Error()),
-		)
 		return nil, status.Errorf(codes.NotFound, "id not found")
 	}
 
@@ -70,9 +60,6 @@ func (s *Server) Update(_ context.Context, data *CharUpdateReq) (*CharUpdateRes,
 
 	char, err := s.db.Update(&item)
 	if err != nil {
-		go setup.Logger.Error("not found",
-			zap.String("details", status.Errorf(codes.NotFound, "id not found").Error()),
-		)
 		return nil, status.Errorf(codes.NotFound, "id not found")
 	}
 
@@ -92,7 +79,7 @@ func (s *Server) GetAll(_ *GetAllReq, stream Characters_GetAllServer) error {
 		}
 		if err := stream.Send(&res); err != nil {
 			go setup.Logger.Error("error sending stream",
-				zap.String("details", err.Error()),
+				zap.String("err: ", err.Error()),
 			)
 			return err
 		}
