@@ -4,14 +4,26 @@ import (
 	"errors"
 )
 
-type database []*char
+type database interface {
+	Save(c *Character) *char
+	Update(c *char) (*Character, error)
+	Delete(id int32) error
+	Get(id int32) (*Character, error)
+	GetAll() []*char
+}
+
+type memDB []*char
+
+func NewMemDB() *memDB {
+	return &memDB{}
+}
 
 type char struct {
 	id   int32
 	char *Character
 }
 
-func (d *database) Save(c *Character) *char {
+func (d *memDB) Save(c *Character) *char {
 	newChar := char{
 		char: c,
 	}
@@ -20,7 +32,7 @@ func (d *database) Save(c *Character) *char {
 	return &newChar
 }
 
-func (d *database) Update(c *char) (*Character, error) {
+func (d *memDB) Update(c *char) (*Character, error) {
 	for _, i := range *d {
 		if i.id == c.id {
 			if i.char.Name != c.char.Name && i.char.Name != "" {
@@ -42,7 +54,7 @@ func (d *database) Update(c *char) (*Character, error) {
 	return nil, errors.New("not found")
 }
 
-func (d *database) Delete(id int32) error {
+func (d *memDB) Delete(id int32) error {
 	list := d.GetAll()
 	for i, char := range list {
 		if char.id == id {
@@ -54,7 +66,7 @@ func (d *database) Delete(id int32) error {
 	return errors.New("not found")
 }
 
-func (d *database) Get(id int32) (*Character, error) {
+func (d *memDB) Get(id int32) (*Character, error) {
 	for _, item := range *d {
 		if item.id == id {
 			return item.char, nil
@@ -63,6 +75,6 @@ func (d *database) Get(id int32) (*Character, error) {
 	return nil, errors.New("not found")
 }
 
-func (d *database) GetAll() []*char {
+func (d *memDB) GetAll() []*char {
 	return *d
 }

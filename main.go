@@ -18,6 +18,7 @@ func main() {
 	if err := setup.InitLogger(); err != nil {
 		log.Println("error initializing logger: " + err.Error())
 	}
+	defer setup.Logger.Sync()
 
 	lis := make(chan net.Listener)
 	go initListener(lis)
@@ -40,7 +41,10 @@ func initListener(c chan<- net.Listener) {
 func initServer() *grpc.Server {
 	srv := grpc.NewServer()
 
-	character.RegisterCharactersServer(srv, &character.Server{})
+	charServerOpts := character.ServerOpts{
+		DB: character.NewMemDB(),
+	}
+	character.RegisterCharactersServer(srv, character.NewServer(charServerOpts))
 	raid.RegisterRaidsServer(srv, &raid.Server{})
 
 	reflection.Register(srv)

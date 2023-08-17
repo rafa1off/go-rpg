@@ -12,11 +12,21 @@ import (
 
 type Server struct {
 	UnimplementedCharactersServer
-	db database
+	ServerOpts
+}
+
+type ServerOpts struct {
+	DB database
+}
+
+func NewServer(opts ...ServerOpts) *Server {
+	return &Server{
+		ServerOpts: opts[0],
+	}
 }
 
 func (s *Server) Create(_ context.Context, req *CharCreateReq) (*CharCreateRes, error) {
-	item := s.db.Save(req.Char)
+	item := s.DB.Save(req.Char)
 
 	res := CharCreateRes{
 		Id:   item.id,
@@ -27,7 +37,7 @@ func (s *Server) Create(_ context.Context, req *CharCreateReq) (*CharCreateRes, 
 }
 
 func (s *Server) Get(_ context.Context, req *CharGetReq) (*CharGetRes, error) {
-	char, err := s.db.Get(req.Id)
+	char, err := s.DB.Get(req.Id)
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "id not found")
 	}
@@ -41,7 +51,7 @@ func (s *Server) Get(_ context.Context, req *CharGetReq) (*CharGetRes, error) {
 }
 
 func (s *Server) Delete(_ context.Context, req *CharDeleteReq) (*CharDeleteRes, error) {
-	if err := s.db.Delete(req.Id); err != nil {
+	if err := s.DB.Delete(req.Id); err != nil {
 		return nil, status.Errorf(codes.NotFound, "id not found")
 	}
 
@@ -58,7 +68,7 @@ func (s *Server) Update(_ context.Context, data *CharUpdateReq) (*CharUpdateRes,
 		char: data.Char,
 	}
 
-	char, err := s.db.Update(&item)
+	char, err := s.DB.Update(&item)
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "id not found")
 	}
@@ -72,7 +82,8 @@ func (s *Server) Update(_ context.Context, data *CharUpdateReq) (*CharUpdateRes,
 }
 
 func (s *Server) GetAll(_ *GetAllReq, stream Characters_GetAllServer) error {
-	for _, i := range s.db {
+	res := s.DB.GetAll()
+	for _, i := range res {
 		res := GetAllRes{
 			Id:   i.id,
 			Char: i.char,
