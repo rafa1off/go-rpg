@@ -1,8 +1,8 @@
 package setup
 
 import (
-	app "go-rpg/app/services"
 	"go-rpg/proto"
+	"go-rpg/services"
 	"net"
 	"strconv"
 
@@ -35,7 +35,7 @@ func (s *Server) Run() {
 
 	srv := grpc.NewServer()
 
-	proto.RegisterCharactersServer(srv, app.NewCharServer())
+	proto.RegisterCharactersServer(srv, services.NewCharServer())
 	proto.RegisterRaidsServer(srv, nil)
 
 	reflection.Register(srv)
