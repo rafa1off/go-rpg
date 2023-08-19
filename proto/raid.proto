@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package raid;
 
-option go_package = "raid";
+option go_package = "/proto";
 
 message Raid {
   bool active = 1;

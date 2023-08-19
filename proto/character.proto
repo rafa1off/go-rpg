@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package character;
 
-option go_package = "character";
+option go_package = "/proto";
 
 message Character {
   string name = 1;
