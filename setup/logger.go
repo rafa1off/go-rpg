@@ -14,7 +14,7 @@ func InitLogger() error {
 
 	go func() {
 		if _, err := os.ReadDir("logs"); err != nil {
-			_ = os.Mkdir("logs", 0222)
+			os.Mkdir("logs", 0222)
 		}
 		file, err := os.OpenFile("logs/app.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0222)
 		if err != nil {
