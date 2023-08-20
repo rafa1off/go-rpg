@@ -4,6 +4,9 @@ import (
 	"context"
 	"go-rpg/app"
 	"go-rpg/proto"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type CharServer struct {
@@ -28,4 +31,18 @@ func (s *CharServer) Create(ctx context.Context, req *proto.CharCreateReq) (*pro
 		ID:   int32(char.ID),
 		Char: char.Character,
 	}, nil
+}
+
+func (s *CharServer) GetAll(req *proto.GetAllReq, stream proto.Characters_GetAllServer) error {
+	res, err := s.db.Find()
+	if err != nil {
+		return status.Error(codes.Internal, "error returning all characters")
+	}
+	for _, i := range res {
+		stream.Send(&proto.GetAllRes{
+			ID:   int32(i.ID),
+			Char: i.Character,
+		})
+	}
+	return nil
 }

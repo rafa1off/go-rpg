@@ -32,3 +32,12 @@ func NewPostgres() (*PostgresDB, error) {
 func (db *PostgresDB) Save(char *app.Character) {
 	db.engine.Create(char)
 }
+
+func (db *PostgresDB) Find() ([]*app.Character, error) {
+	var chars []*app.Character
+	res := db.engine.Find(&chars)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+	return chars, nil
+}
