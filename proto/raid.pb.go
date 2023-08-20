@@ -227,7 +227,7 @@ type RaidIn struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id   int32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	ID   int32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Raid *Raid `protobuf:"bytes,2,opt,name=raid,proto3,oneof" json:"raid,omitempty"`
 }
 
@@ -265,7 +265,7 @@ func (*RaidIn) Descriptor() ([]byte, []int) {
 
 func (x *RaidIn) GetId() int32 {
 	if x != nil {
-		return x.Id
+		return x.ID
 	}
 	return 0
 }
@@ -283,7 +283,7 @@ type RaidOut struct {
 	unknownFields protoimpl.UnknownFields
 
 	Raid *Raid `protobuf:"bytes,1,opt,name=raid,proto3" json:"raid,omitempty"`
-	Id   int32 `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
+	ID   int32 `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
 }
 
 func (x *RaidOut) Reset() {
@@ -327,7 +327,7 @@ func (x *RaidOut) GetRaid() *Raid {
 
 func (x *RaidOut) GetId() int32 {
 	if x != nil {
-		return x.Id
+		return x.ID
 	}
 	return 0
 }

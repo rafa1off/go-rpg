@@ -1,9 +1,13 @@
 package app
 
-import "go-rpg/proto"
+import (
+	"go-rpg/proto"
+
+	"gorm.io/gorm"
+)
 
 type Character struct {
-	Id int32
+	gorm.Model
 	*proto.Character
 }
 
@@ -13,6 +17,5 @@ func NewChar(char *proto.Character) Character {
 	}
 
 	c.Character.Health = 100
-
 	return c
 }

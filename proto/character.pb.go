@@ -244,7 +244,7 @@ type CharCreateRes struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	ID   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Char *Character `protobuf:"bytes,2,opt,name=char,proto3" json:"char,omitempty"`
 }
 
@@ -282,7 +282,7 @@ func (*CharCreateRes) Descriptor() ([]byte, []int) {
 
 func (x *CharCreateRes) GetId() int32 {
 	if x != nil {
-		return x.Id
+		return x.ID
 	}
 	return 0
 }
@@ -299,7 +299,7 @@ type CharGetReq struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	ID   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Char *Character `protobuf:"bytes,2,opt,name=char,proto3" json:"char,omitempty"`
 }
 
@@ -337,7 +337,7 @@ func (*CharGetReq) Descriptor() ([]byte, []int) {
 
 func (x *CharGetReq) GetId() int32 {
 	if x != nil {
-		return x.Id
+		return x.ID
 	}
 	return 0
 }
@@ -354,7 +354,7 @@ type CharGetRes struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	ID   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Char *Character `protobuf:"bytes,2,opt,name=char,proto3" json:"char,omitempty"`
 }
 
@@ -392,7 +392,7 @@ func (*CharGetRes) Descriptor() ([]byte, []int) {
 
 func (x *CharGetRes) GetId() int32 {
 	if x != nil {
-		return x.Id
+		return x.ID
 	}
 	return 0
 }
@@ -409,7 +409,7 @@ type CharDeleteReq struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id int32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	ID int32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
 func (x *CharDeleteReq) Reset() {
@@ -446,7 +446,7 @@ func (*CharDeleteReq) Descriptor() ([]byte, []int) {
 
 func (x *CharDeleteReq) GetId() int32 {
 	if x != nil {
-		return x.Id
+		return x.ID
 	}
 	return 0
 }
@@ -511,7 +511,7 @@ type CharUpdateReq struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	ID   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Char *Character `protobuf:"bytes,2,opt,name=char,proto3" json:"char,omitempty"`
 }
 
@@ -549,7 +549,7 @@ func (*CharUpdateReq) Descriptor() ([]byte, []int) {
 
 func (x *CharUpdateReq) GetId() int32 {
 	if x != nil {
-		return x.Id
+		return x.ID
 	}
 	return 0
 }
@@ -566,7 +566,7 @@ type CharUpdateRes struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	ID   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Char *Character `protobuf:"bytes,2,opt,name=char,proto3" json:"char,omitempty"`
 }
 
@@ -604,7 +604,7 @@ func (*CharUpdateRes) Descriptor() ([]byte, []int) {
 
 func (x *CharUpdateRes) GetId() int32 {
 	if x != nil {
-		return x.Id
+		return x.ID
 	}
 	return 0
 }
@@ -659,7 +659,7 @@ type GetAllRes struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	ID   int32      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Char *Character `protobuf:"bytes,2,opt,name=char,proto3" json:"char,omitempty"`
 }
 
@@ -697,7 +697,7 @@ func (*GetAllRes) Descriptor() ([]byte, []int) {
 
 func (x *GetAllRes) GetId() int32 {
 	if x != nil {
-		return x.Id
+		return x.ID
 	}
 	return 0
 }

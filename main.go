@@ -11,7 +11,7 @@ func main() {
 	}
 	defer setup.Logger.Sync()
 
-	server := setup.NewServer()
+	server := setup.NewGrpcServer()
 
-	server.Run()
+	setup.Logger.Sugar().Fatal(server.Run())
 }

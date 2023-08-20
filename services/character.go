@@ -25,7 +25,7 @@ func (s *CharServer) Create(ctx context.Context, req *proto.CharCreateReq) (*pro
 	char := app.NewChar(req.Char)
 	s.db.Save(&char)
 	return &proto.CharCreateRes{
-		Id:   char.Id,
+		ID:   int32(char.ID),
 		Char: char.Character,
 	}, nil
 }

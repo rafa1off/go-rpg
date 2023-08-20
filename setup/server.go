@@ -1,49 +1,19 @@
 package setup
 
 import (
-	"go-rpg/db"
-	"go-rpg/proto"
-	"go-rpg/services"
 	"net"
-	"strconv"
-
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 )
 
-const defaultPort int = 8000
+const (
+	grpcPort = "8000"
+	restPort = "8080"
+)
 
-type Server struct {
-	engine *grpc.Server
-}
-
-func NewServer() *Server {
-	return &Server{}
-}
-
-func initListener(c chan<- net.Listener) {
-	lis, err := net.Listen("tcp", "0.0.0.0:"+strconv.Itoa(defaultPort))
+func initListener(c chan<- net.Listener, port string) {
+	lis, err := net.Listen("tcp", "0.0.0.0:"+port)
 	if err != nil {
 		c <- nil
 		return
 	}
 	c <- lis
-}
-
-func (s *Server) Run() {
-	lis := make(chan net.Listener)
-	go initListener(lis)
-
-	srv := grpc.NewServer()
-
-	charServerDb := services.SetDB(db.NewMemDB())
-	proto.RegisterCharactersServer(srv, services.NewCharServer(charServerDb))
-	proto.RegisterRaidsServer(srv, nil)
-
-	reflection.Register(srv)
-
-	s.engine = srv
-
-	go Logger.Info("server listening on: http://localhost:" + strconv.Itoa(defaultPort))
-	Logger.Sugar().Fatal(s.engine.Serve(<-lis))
 }

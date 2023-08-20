@@ -10,4 +10,34 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./:/code
+      - default:/code/logs
+    env_file:
+      - .env
+    depends_on: 
+    - postgres
+    networks:
+      - bridge
+    restart: always
+
+  
+  postgres:
+    image: postgres:15.4-alpine
+    container_name: go-rpg-postgres
+    ports:
+      - "8432:5432"
+    env_file:
+      - .env
+    volumes:
+      - default:/var/lib/postgresql/data
+    networks:
+      - bridge
+    restart: always
+
+volumes:
+  default:
+   name: go-rpg
+
+networks:
+  bridge:
+   name: go-rpg-bridge
+   driver: bridge
