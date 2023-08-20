@@ -1,6 +1,7 @@
 package setup
 
 import (
+	"go-rpg/db"
 	"go-rpg/proto"
 	"go-rpg/services"
 	"net"
@@ -35,7 +36,8 @@ func (s *Server) Run() {
 
 	srv := grpc.NewServer()
 
-	proto.RegisterCharactersServer(srv, services.NewCharServer())
+	charServerDb := services.SetDB(db.NewMemDB())
+	proto.RegisterCharactersServer(srv, services.NewCharServer(charServerDb))
 	proto.RegisterRaidsServer(srv, nil)
 
 	reflection.Register(srv)
