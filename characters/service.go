@@ -1,8 +1,8 @@
-package services
+package characters
 
 import (
 	"context"
-	"go-rpg/app"
+	"go-rpg/db"
 	"go-rpg/proto"
 
 	"google.golang.org/grpc/codes"
@@ -12,6 +12,24 @@ import (
 type CharServer struct {
 	proto.UnimplementedCharactersServer
 	ServerOpts
+}
+
+type ServerOpts struct {
+	db db.Database
+}
+
+type ServerOptsFn func(*ServerOpts)
+
+func defaultOpts() ServerOpts {
+	return ServerOpts{
+		db: nil,
+	}
+}
+
+func SetDB(db db.Database) func(*ServerOpts) {
+	return func(so *ServerOpts) {
+		so.db = db
+	}
 }
 
 func NewCharServer(opts ...ServerOptsFn) *CharServer {
@@ -25,8 +43,8 @@ func NewCharServer(opts ...ServerOptsFn) *CharServer {
 }
 
 func (s *CharServer) Create(ctx context.Context, req *proto.CharCreateReq) (*proto.CharCreateRes, error) {
-	char := app.NewChar(req.Char)
-	s.db.Save(&char)
+	char := new(req.Char)
+	s.db.Create(&char)
 	return &proto.CharCreateRes{
 		ID:   int32(char.ID),
 		Char: char.Character,
@@ -34,11 +52,12 @@ func (s *CharServer) Create(ctx context.Context, req *proto.CharCreateReq) (*pro
 }
 
 func (s *CharServer) GetAll(req *proto.GetAllReq, stream proto.Characters_GetAllServer) error {
-	res, err := s.db.Find()
+	var chars []*Character
+	err := s.db.Find(&chars)
 	if err != nil {
 		return status.Error(codes.Internal, "error returning all characters")
 	}
-	for _, i := range res {
+	for _, i := range chars {
 		stream.Send(&proto.GetAllRes{
 			ID:   int32(i.ID),
 			Char: i.Character,

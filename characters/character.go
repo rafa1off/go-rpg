@@ -1,4 +1,4 @@
-package app
+package characters
 
 import (
 	"go-rpg/proto"
@@ -11,7 +11,7 @@ type Character struct {
 	*proto.Character
 }
 
-func NewChar(char *proto.Character) Character {
+func new(char *proto.Character) Character {
 	c := Character{
 		Character: char,
 	}

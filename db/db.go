@@ -1,8 +1,6 @@
 package db
 
-import "go-rpg/app"
-
 type Database interface {
-	Save(char *app.Character)
-	Find() ([]*app.Character, error)
+	Create(value interface{}) error
+	Find(dest interface{}, conds ...interface{}) error
 }

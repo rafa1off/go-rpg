@@ -1,8 +1,16 @@
 package main
 
 import (
+	"go-rpg/characters"
+	"go-rpg/db"
+	"go-rpg/server"
 	"go-rpg/setup"
 	"log"
+)
+
+const (
+	grpcPort = "8000"
+	restPort = "8080"
 )
 
 func main() {
@@ -11,7 +19,15 @@ func main() {
 	}
 	defer setup.Logger.Sync()
 
-	server := setup.NewGrpcServer()
+	pgdb, err := db.NewPostgres(&characters.Character{})
+	if err != nil {
+		setup.Logger.Info("err initing postgres: " + err.Error())
+	}
 
-	setup.Logger.Sugar().Fatal(server.Run())
+	charServiceDB := characters.SetDB(pgdb)
+	charSevice := characters.NewCharServer(charServiceDB)
+
+	srv := server.NewGrpc(grpcPort)
+
+	setup.Logger.Sugar().Fatal(srv.Run(charSevice))
 }

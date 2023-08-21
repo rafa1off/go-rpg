@@ -1,4 +1,4 @@
-package app
+package characters
 
 import (
 	"go-rpg/proto"
@@ -14,7 +14,7 @@ func TestNewChar(t *testing.T) {
 			Health: 100,
 		},
 	}
-	got := NewChar(&proto.Character{
+	got := new(&proto.Character{
 		Name:   "teste1",
 		Race:   0,
 		Class:  0,
@@ -27,7 +27,7 @@ func TestNewChar(t *testing.T) {
 
 func BenchmarkNewChar(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		NewChar(&proto.Character{
+		new(&proto.Character{
 			Name:   "teste",
 			Race:   0,
 			Class:  0,

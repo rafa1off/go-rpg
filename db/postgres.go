@@ -1,20 +1,18 @@
 package db
 
 import (
-	"go-rpg/app"
 	"os"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-type PostgresDB struct {
+type postgresDB struct {
 	engine *gorm.DB
 }
 
-var dsn = os.Getenv("POSTGRES_CONN")
-
-func NewPostgres() (*PostgresDB, error) {
+func NewPostgres(models ...interface{}) (*postgresDB, error) {
+	dsn := os.Getenv("POSTGRES_CONN")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
@@ -22,22 +20,25 @@ func NewPostgres() (*PostgresDB, error) {
 		return nil, err
 	}
 
-	db.AutoMigrate(&app.Character{})
+	db.AutoMigrate(models...)
 
-	return &PostgresDB{
+	return &postgresDB{
 		engine: db,
 	}, nil
 }
 
-func (db *PostgresDB) Save(char *app.Character) {
-	db.engine.Create(char)
+func (db *postgresDB) Create(value interface{}) error {
+	err := db.engine.Create(value).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-func (db *PostgresDB) Find() ([]*app.Character, error) {
-	var chars []*app.Character
-	res := db.engine.Find(&chars)
-	if res.Error != nil {
-		return nil, res.Error
+func (db *postgresDB) Find(dest interface{}, conds ...interface{}) error {
+	err := db.engine.Find(dest).Error
+	if err != nil {
+		return err
 	}
-	return chars, nil
+	return nil
 }

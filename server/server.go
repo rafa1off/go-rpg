@@ -1,12 +1,7 @@
-package setup
+package server
 
 import (
 	"net"
-)
-
-const (
-	grpcPort = "8000"
-	restPort = "8080"
 )
 
 func initListener(c chan<- net.Listener, port string) {
