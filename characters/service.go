@@ -33,7 +33,7 @@ func SetDB(db db.Database) func(*serverOpts) {
 	}
 }
 
-func NewCharServer(opts ...ServerOptsFn) *CharServer {
+func Server(opts ...ServerOptsFn) *CharServer {
 	opt := defaultOpts()
 	for _, fn := range opts {
 		fn(&opt)

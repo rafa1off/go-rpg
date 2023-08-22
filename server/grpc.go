@@ -11,25 +11,34 @@ import (
 )
 
 type grpcServer struct {
-	engine *grpc.Server
-	port   string
+	engine   *grpc.Server
+	services []interface{}
 }
 
-func NewGrpc(port string) *grpcServer {
+func Grpc(services ...interface{}) *grpcServer {
 	return &grpcServer{
-		engine: grpc.NewServer(),
-		port:   port,
+		engine:   grpc.NewServer(),
+		services: services,
 	}
 }
 
-func (s *grpcServer) Run(charService *characters.CharServer) error {
-	lis := make(chan net.Listener)
-	go initListener(lis, s.port)
+func loadServices(s *grpcServer) {
+	for _, service := range s.services {
+		switch service {
+		case service.(*characters.CharServer):
+			proto.RegisterCharactersServer(s.engine, service.(*characters.CharServer))
+		}
+	}
+}
 
-	proto.RegisterCharactersServer(s.engine, charService)
+func (s *grpcServer) Run(port string) error {
+	lis := make(chan net.Listener)
+	go initListener(lis, port)
+
+	loadServices(s)
 
 	reflection.Register(s.engine)
 
-	go setup.Logger.Info("server listening on: http://localhost:" + s.port)
+	go setup.Logger.Info("server listening on: http://localhost:" + port)
 	return s.engine.Serve(<-lis)
 }

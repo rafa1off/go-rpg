@@ -11,7 +11,7 @@ type postgresDB struct {
 	engine *gorm.DB
 }
 
-func NewPostgres(models ...interface{}) (*postgresDB, error) {
+func Postgres(models ...interface{}) (*postgresDB, error) {
 	dsn := os.Getenv("POSTGRES_CONN")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
