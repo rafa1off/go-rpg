@@ -10,18 +10,18 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type CharService struct {
+type charService struct {
 	proto.UnimplementedCharactersServer
 	core app.Core
 }
 
-func Character(core app.Core) *CharService {
-	return &CharService{
+func Character(core app.Core) *charService {
+	return &charService{
 		core: core,
 	}
 }
 
-func (s *CharService) Create(ctx context.Context, req *proto.CharCreateReq) (*proto.CharCreateRes, error) {
+func (s *charService) Create(ctx context.Context, req *proto.CharCreateReq) (*proto.CharCreateRes, error) {
 	char, err := s.core.New(req.Char)
 	if err != nil {
 		go setup.Logger.Error("error inserting value into db: " + err.Error())
@@ -33,7 +33,7 @@ func (s *CharService) Create(ctx context.Context, req *proto.CharCreateReq) (*pr
 	}, nil
 }
 
-func (s *CharService) GetAll(req *proto.GetAllReq, stream proto.Characters_GetAllServer) error {
+func (s *charService) GetAll(req *proto.GetAllReq, stream proto.Characters_GetAllServer) error {
 	chars, err := s.core.All()
 	if err != nil {
 		go setup.Logger.Error("error returning all characters: " + err.Error())

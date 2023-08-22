@@ -11,6 +11,7 @@ type charCore struct {
 }
 
 func CharCore(db *gorm.DB) *charCore {
+	db.AutoMigrate(&character{})
 	return &charCore{
 		db: db,
 	}
@@ -19,10 +20,6 @@ func CharCore(db *gorm.DB) *charCore {
 type character struct {
 	gorm.Model
 	*proto.Character
-}
-
-func CharModel() *character {
-	return &character{}
 }
 
 func (c *charCore) New(char *proto.Character) (*character, error) {

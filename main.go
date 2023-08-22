@@ -19,9 +19,9 @@ func main() {
 	}
 	defer setup.Logger.Sync()
 
-	db, err := db.Postgres(app.CharModel())
+	db, err := db.Postgres()
 	if err != nil {
-		setup.Logger.Sugar().Panic("err initializing db: " + err.Error())
+		setup.Logger.Sugar().Panic("error initializing db: " + err.Error())
 	}
 
 	charCore := app.CharCore(db)
