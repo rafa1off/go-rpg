@@ -2,12 +2,12 @@ package characters
 
 import (
 	"context"
-	"go-rpg/db"
 	"go-rpg/proto"
 	"go-rpg/setup"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"gorm.io/gorm"
 )
 
 type CharServer struct {
@@ -16,7 +16,7 @@ type CharServer struct {
 }
 
 type serverOpts struct {
-	db db.Database
+	db *gorm.DB
 }
 
 type ServerOptsFn func(*serverOpts)
@@ -27,9 +27,9 @@ func defaultOpts() serverOpts {
 	}
 }
 
-func SetDB(db db.Database) func(*serverOpts) {
-	return func(so *serverOpts) {
-		so.db = db
+func SetDB(db *gorm.DB) func(*serverOpts) {
+	return func(opt *serverOpts) {
+		opt.db = db
 	}
 }
 
@@ -45,7 +45,7 @@ func Server(opts ...ServerOptsFn) *CharServer {
 
 func (s *CharServer) Create(ctx context.Context, req *proto.CharCreateReq) (*proto.CharCreateRes, error) {
 	char := new(req.Char)
-	err := s.db.Create(&char)
+	err := s.db.Create(&char).Error
 	if err != nil {
 		go setup.Logger.Error("error inserting value into db: " + err.Error())
 		return nil, status.Error(codes.Internal, "internal server error")
@@ -57,8 +57,8 @@ func (s *CharServer) Create(ctx context.Context, req *proto.CharCreateReq) (*pro
 }
 
 func (s *CharServer) GetAll(req *proto.GetAllReq, stream proto.Characters_GetAllServer) error {
-	var chars []*character
-	err := s.db.Find(&chars)
+	var chars []character
+	err := s.db.Find(&chars).Error
 	if err != nil {
 		go setup.Logger.Error("error returning all characters: " + err.Error())
 		return status.Error(codes.Internal, "internal server error")

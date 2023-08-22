@@ -21,11 +21,10 @@ func main() {
 
 	pgdb, err := db.Postgres(characters.Model())
 	if err != nil {
-		setup.Logger.Error("err initializing postgres: " + err.Error())
+		go setup.Logger.Error("err initializing postgres: " + err.Error())
 	}
 
-	charServiceDB := characters.SetDB(pgdb)
-	charService := characters.Server(charServiceDB)
+	charService := characters.Server(characters.SetDB(pgdb))
 
 	srv := server.Grpc(charService)
 
