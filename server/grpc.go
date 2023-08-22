@@ -1,8 +1,8 @@
 package server
 
 import (
-	"go-rpg/characters"
 	"go-rpg/proto"
+	"go-rpg/service"
 	"go-rpg/setup"
 	"net"
 
@@ -23,10 +23,10 @@ func Grpc(services ...interface{}) *grpcServer {
 }
 
 func loadServices(s *grpcServer) {
-	for _, service := range s.services {
-		switch service {
-		case service.(*characters.CharServer):
-			proto.RegisterCharactersServer(s.engine, service.(*characters.CharServer))
+	for _, i := range s.services {
+		switch i {
+		case i.(*service.CharService):
+			proto.RegisterCharactersServer(s.engine, i.(*service.CharService))
 		}
 	}
 }
