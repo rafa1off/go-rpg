@@ -19,15 +19,15 @@ func main() {
 	}
 	defer setup.Logger.Sync()
 
-	pgdb, err := db.NewPostgres(&characters.Character{})
+	pgdb, err := db.NewPostgres(characters.Model())
 	if err != nil {
-		setup.Logger.Info("err initing postgres: " + err.Error())
+		setup.Logger.Error("err initializing postgres: " + err.Error())
 	}
 
 	charServiceDB := characters.SetDB(pgdb)
-	charSevice := characters.NewCharServer(charServiceDB)
+	charService := characters.NewCharServer(charServiceDB)
 
 	srv := server.NewGrpc(grpcPort)
 
-	setup.Logger.Sugar().Fatal(srv.Run(charSevice))
+	setup.Logger.Sugar().Fatal(srv.Run(charService))
 }

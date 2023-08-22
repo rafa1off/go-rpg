@@ -4,6 +4,7 @@ import (
 	"context"
 	"go-rpg/db"
 	"go-rpg/proto"
+	"go-rpg/setup"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -11,23 +12,23 @@ import (
 
 type CharServer struct {
 	proto.UnimplementedCharactersServer
-	ServerOpts
+	serverOpts
 }
 
-type ServerOpts struct {
+type serverOpts struct {
 	db db.Database
 }
 
-type ServerOptsFn func(*ServerOpts)
+type ServerOptsFn func(*serverOpts)
 
-func defaultOpts() ServerOpts {
-	return ServerOpts{
+func defaultOpts() serverOpts {
+	return serverOpts{
 		db: nil,
 	}
 }
 
-func SetDB(db db.Database) func(*ServerOpts) {
-	return func(so *ServerOpts) {
+func SetDB(db db.Database) func(*serverOpts) {
+	return func(so *serverOpts) {
 		so.db = db
 	}
 }
@@ -38,13 +39,17 @@ func NewCharServer(opts ...ServerOptsFn) *CharServer {
 		fn(&opt)
 	}
 	return &CharServer{
-		ServerOpts: opt,
+		serverOpts: opt,
 	}
 }
 
 func (s *CharServer) Create(ctx context.Context, req *proto.CharCreateReq) (*proto.CharCreateRes, error) {
 	char := new(req.Char)
-	s.db.Create(&char)
+	err := s.db.Create(&char)
+	if err != nil {
+		go setup.Logger.Error("error inserting value into db: " + err.Error())
+		return nil, status.Error(codes.Internal, "internal server error")
+	}
 	return &proto.CharCreateRes{
 		ID:   int32(char.ID),
 		Char: char.Character,
@@ -52,10 +57,11 @@ func (s *CharServer) Create(ctx context.Context, req *proto.CharCreateReq) (*pro
 }
 
 func (s *CharServer) GetAll(req *proto.GetAllReq, stream proto.Characters_GetAllServer) error {
-	var chars []*Character
+	var chars []*character
 	err := s.db.Find(&chars)
 	if err != nil {
-		return status.Error(codes.Internal, "error returning all characters")
+		go setup.Logger.Error("error returning all characters: " + err.Error())
+		return status.Error(codes.Internal, "internal server error")
 	}
 	for _, i := range chars {
 		stream.Send(&proto.GetAllRes{

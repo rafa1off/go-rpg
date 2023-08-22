@@ -10,19 +10,19 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-type GrpcServer struct {
+type grpcServer struct {
 	engine *grpc.Server
 	port   string
 }
 
-func NewGrpc(port string) *GrpcServer {
-	return &GrpcServer{
+func NewGrpc(port string) *grpcServer {
+	return &grpcServer{
 		engine: grpc.NewServer(),
 		port:   port,
 	}
 }
 
-func (s *GrpcServer) Run(charService *characters.CharServer) error {
+func (s *grpcServer) Run(charService *characters.CharServer) error {
 	lis := make(chan net.Listener)
 	go initListener(lis, s.port)
 

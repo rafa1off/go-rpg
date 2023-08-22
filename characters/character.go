@@ -6,13 +6,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type Character struct {
+type character struct {
 	gorm.Model
 	*proto.Character
 }
 
-func new(char *proto.Character) Character {
-	c := Character{
+func Model() *character {
+	return &character{}
+}
+
+func new(char *proto.Character) character {
+	c := character{
 		Character: char,
 	}
 

@@ -6,7 +6,7 @@ import (
 )
 
 func TestNewChar(t *testing.T) {
-	want := Character{
+	want := character{
 		Character: &proto.Character{
 			Name:   "teste",
 			Race:   0,
