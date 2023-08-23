@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package character;
 
-option go_package = "./character";
+option go_package = "/proto";
 
 message Character {
   string name = 1;
@@ -26,25 +26,55 @@ message Character {
   Class class = 4;
 }
 
-message CharData {
-  int32 id = 1;
-  optional Character char = 2;
+message CharCreateReq {
+  Character char = 1;
 }
 
-message Info {
+message CharCreateRes {
+  int32 id = 1;
+  Character char = 2;
+}
+
+message CharGetReq {
+  int32 id = 1;
+  Character char = 2;
+}
+
+message CharGetRes {
+  int32 id = 1;
+  Character char = 2;
+}
+
+message CharDeleteReq {
+  int32 id = 1;
+}
+
+message CharDeleteRes {
   string details = 1;
   optional Character char = 2;
 }
 
-message DB {
-  optional string db = 1;
+message CharUpdateReq {
+  int32 id = 1;
+  Character char = 2;
+}
+
+message CharUpdateRes {
+  int32 id = 1;
+  Character char = 2;
+}
+
+message GetAllReq {}
+
+message GetAllRes {
+  int32 id = 1;
+  Character char = 2;
 }
 
 service Characters {
-  rpc Create (Character) returns (Info);
-  rpc Get (CharData) returns (CharData);
-  rpc Delete (CharData) returns (Info);
-  rpc Update (CharData) returns (Character);
-  rpc GetAll (DB) returns (stream CharData);
+  rpc Create (CharCreateReq) returns (CharCreateRes);
+  rpc Get (CharGetReq) returns (CharGetRes);
+  rpc Delete (CharDeleteReq) returns (CharDeleteRes);
+  rpc Update (CharUpdateReq) returns (CharUpdateRes);
+  rpc GetAll (GetAllReq) returns (stream GetAllRes);
 }
-

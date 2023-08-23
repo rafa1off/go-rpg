@@ -1,50 +1,34 @@
 package main
 
 import (
-	"go-rpg/character"
-	"go-rpg/raid"
+	"go-rpg/app"
+	"go-rpg/db"
+	"go-rpg/server"
+	"go-rpg/service"
 	"go-rpg/setup"
-	"log"
-	"net"
-	"strconv"
-
-	"go.uber.org/zap"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 )
 
-const defaultPort int = 8000
+const (
+	grpcPort string = "8000"
+	restPort string = "8080"
+)
 
 func main() {
 	if err := setup.InitLogger(); err != nil {
-		log.Println("error initializing logger: " + err.Error())
+		panic("error initializing logger: " + err.Error())
 	}
+	defer setup.Logger.Sync()
 
-	lis := make(chan net.Listener)
-	go initListener(lis)
-
-	server := grpc.NewServer()
-
-	character.RegisterCharactersServer(server, &character.Server{})
-	raid.RegisterRaidsServer(server, &raid.Server{})
-
-	reflection.Register(server)
-
-	go setup.Logger.Info("server listening on: http://localhost:" + strconv.Itoa(defaultPort))
-	if err := server.Serve(<-lis); err != nil {
-		go setup.Logger.Error("error listening network",
-			zap.String("error", err.Error()),
-		)
-	}
-}
-
-func initListener(c chan<- net.Listener) {
-	lis, err := net.Listen("tcp", "0.0.0.0:"+strconv.Itoa(defaultPort))
+	db, err := db.Postgres()
 	if err != nil {
-		go setup.Logger.Error("error listening network",
-			zap.String("details", err.Error()))
-		c <- nil
-		return
+		setup.Logger.Sugar().Panic("error initializing db: " + err.Error())
 	}
-	c <- lis
+
+	charCore := app.CharCore(db)
+
+	charService := service.Character(charCore)
+
+	srv := server.Grpc(charService)
+
+	setup.Logger.Sugar().Fatal(srv.Run(grpcPort))
 }
