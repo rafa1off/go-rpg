@@ -19,7 +19,7 @@ func main() {
 	}
 	defer setup.Logger.Sync()
 
-	db, err := db.Postgres()
+	db, err := db.InMemory()
 	if err != nil {
 		setup.Logger.Sugar().Panic("error initializing db: " + err.Error())
 	}
@@ -28,7 +28,7 @@ func main() {
 
 	charService := service.Character(charCore)
 
-	srv := server.Grpc(charService)
+	srv := server.Grpc(charService.Register)
 
 	setup.Logger.Sugar().Fatal(srv.Run(grpcPort))
 }

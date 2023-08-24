@@ -6,6 +6,7 @@ import (
 	"go-rpg/proto"
 	"go-rpg/setup"
 
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -19,6 +20,10 @@ func Character(core app.Core) *charService {
 	return &charService{
 		core: core,
 	}
+}
+
+func (s *charService) Register(srv *grpc.Server) {
+	proto.RegisterCharactersServer(srv, s)
 }
 
 func (s *charService) Create(ctx context.Context, req *proto.CharCreateReq) (*proto.CharCreateRes, error) {

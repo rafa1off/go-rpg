@@ -11,6 +11,5 @@ func Postgres() (*gorm.DB, error) {
 	dsn := os.Getenv("POSTGRES_CONN")
 	return gorm.Open(postgres.Open(dsn), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
-		PrepareStmt:                              true,
 	})
 }
