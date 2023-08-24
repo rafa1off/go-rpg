@@ -37,7 +37,6 @@ message CharCreateRes {
 
 message CharGetReq {
   int32 id = 1;
-  Character char = 2;
 }
 
 message CharGetRes {
@@ -64,7 +63,10 @@ message CharUpdateRes {
   Character char = 2;
 }
 
-message GetAllReq {}
+message GetAllReq {
+  optional int32 page = 1;
+  optional int32 limit = 2;
+}
 
 message GetAllRes {
   int32 id = 1;

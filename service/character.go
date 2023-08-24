@@ -27,23 +27,78 @@ func (s *charService) Create(ctx context.Context, req *proto.CharCreateReq) (*pr
 		go setup.Logger.Error("error inserting value into db: " + err.Error())
 		return nil, status.Error(codes.Internal, "internal server error")
 	}
+
 	return &proto.CharCreateRes{
-		ID:   int32(char.ID),
+		Id:   int32(char.ID),
 		Char: char.Character,
 	}, nil
 }
 
 func (s *charService) GetAll(req *proto.GetAllReq, stream proto.Characters_GetAllServer) error {
-	chars, err := s.core.All()
+	limit, skip := pagination(req.Page, req.Limit)
+
+	chars, err := s.core.All(skip, limit)
 	if err != nil {
 		go setup.Logger.Error("error returning all characters: " + err.Error())
 		return status.Error(codes.Internal, "internal server error")
 	}
+
 	for _, i := range chars {
 		stream.Send(&proto.GetAllRes{
-			ID:   int32(i.ID),
+			Id:   int32(i.ID),
 			Char: i.Character,
 		})
 	}
+
 	return nil
+}
+
+func (s *charService) Delete(ctx context.Context, req *proto.CharDeleteReq) (*proto.CharDeleteRes, error) {
+	char, err := s.core.Get(int(req.Id))
+
+	switch {
+	case err != nil:
+		return nil, status.Error(codes.Internal, "internal server error")
+	case char.ID == 0:
+		return nil, status.Error(codes.NotFound, "id not found")
+	}
+
+	s.core.Delete(char)
+
+	return &proto.CharDeleteRes{
+		Details: "character deleted",
+		Char:    char.Character,
+	}, nil
+}
+
+func (s *charService) Get(ctx context.Context, req *proto.CharGetReq) (*proto.CharGetRes, error) {
+	char, err := s.core.Get(int(req.Id))
+
+	switch {
+	case err != nil:
+		return nil, status.Error(codes.Internal, "internal server error")
+	case char.ID == 0:
+		return nil, status.Error(codes.NotFound, "id not found")
+	}
+
+	return &proto.CharGetRes{
+		Id:   int32(char.ID),
+		Char: char.Character,
+	}, nil
+}
+
+func (s *charService) Update(ctx context.Context, req *proto.CharUpdateReq) (*proto.CharUpdateRes, error) {
+	char, err := s.core.Update(int(req.Id), req.Char)
+
+	switch {
+	case err != nil:
+		return nil, status.Error(codes.Internal, "internal server error")
+	case char.ID == 0:
+		return nil, status.Error(codes.NotFound, "id not found")
+	}
+
+	return &proto.CharUpdateRes{
+		Id:   int32(char.ID),
+		Char: char.Character,
+	}, nil
 }
