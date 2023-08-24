@@ -1,6 +1,10 @@
 package app
 
-import "go-rpg/proto"
+import (
+	"go-rpg/proto"
+
+	"gorm.io/gorm"
+)
 
 type Core interface {
 	New(char *proto.Character) (*character, error)
@@ -8,4 +12,9 @@ type Core interface {
 	Delete(char *character) error
 	Get(id int) (*character, error)
 	Update(id int, char *proto.Character) (*character, error)
+}
+
+type character struct {
+	gorm.Model
+	*proto.Character
 }
