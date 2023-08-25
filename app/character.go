@@ -11,7 +11,6 @@ type charCore struct {
 }
 
 func CharCore(db *gorm.DB) *charCore {
-
 	go db.AutoMigrate(&character{})
 
 	return &charCore{
@@ -33,7 +32,7 @@ func (c *charCore) New(char *proto.Character) (*character, error) {
 	return &entry, nil
 }
 
-func (c *charCore) All(skip, limit int) ([]*character, error) {
+func (c *charCore) All(limit, skip int) ([]*character, error) {
 	var chars []*character
 
 	err := c.db.Limit(limit).Offset(skip).Find(&chars).Error

@@ -22,7 +22,7 @@ func Grpc(services ...register) *grpcServer {
 	}
 }
 
-func (s *grpcServer) loadServices() {
+func loadServices(s *grpcServer) {
 	for _, service := range s.services {
 		service(s.engine)
 	}
@@ -32,7 +32,7 @@ func (s *grpcServer) Run(port string) error {
 	lis := make(chan net.Listener)
 	go initListener(lis, port)
 
-	s.loadServices()
+	loadServices(s)
 
 	reflection.Register(s.engine)
 

@@ -40,9 +40,7 @@ func (s *charService) Create(ctx context.Context, req *proto.CharCreateReq) (*pr
 }
 
 func (s *charService) GetAll(req *proto.GetAllReq, stream proto.Characters_GetAllServer) error {
-	limit, skip := pagination(req.Page, req.Limit)
-
-	chars, err := s.core.All(skip, limit)
+	chars, err := s.core.All(pagination(req.Page, req.Limit))
 	if err != nil {
 		go setup.Logger.Error("error returning all characters: " + err.Error())
 		return status.Error(codes.Internal, "internal server error")

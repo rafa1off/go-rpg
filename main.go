@@ -19,7 +19,7 @@ func main() {
 	}
 	defer setup.Logger.Sync()
 
-	db, err := db.InMemory()
+	db, err := db.Postgres()
 	if err != nil {
 		setup.Logger.Sugar().Panic("error initializing db: " + err.Error())
 	}
