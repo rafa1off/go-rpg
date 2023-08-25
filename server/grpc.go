@@ -1,7 +1,6 @@
 package server
 
 import (
-	"go-rpg/proto"
 	"go-rpg/setup"
 	"net"
 
@@ -10,19 +9,23 @@ import (
 )
 
 type grpcServer struct {
-	engine    *grpc.Server
-	character proto.CharactersServer
+	engine   *grpc.Server
+	services []register
 }
 
-func Grpc(charService proto.CharactersServer) *grpcServer {
+type register func(srv *grpc.Server)
+
+func Grpc(services ...register) *grpcServer {
 	return &grpcServer{
-		engine:    grpc.NewServer(),
-		character: charService,
+		engine:   grpc.NewServer(),
+		services: services,
 	}
 }
 
 func loadServices(s *grpcServer) {
-	proto.RegisterCharactersServer(s.engine, s.character)
+	for _, service := range s.services {
+		service(s.engine)
+	}
 }
 
 func (s *grpcServer) Run(port string) error {

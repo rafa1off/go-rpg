@@ -28,7 +28,7 @@ func main() {
 
 	charService := service.Character(charCore)
 
-	srv := server.Grpc(charService)
+	srv := server.Grpc(charService.Register)
 
 	setup.Logger.Sugar().Fatal(srv.Run(grpcPort))
 }
