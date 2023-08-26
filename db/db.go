@@ -21,3 +21,7 @@ func InMemory() (*gorm.DB, error) {
 		PrepareStmt:                              true,
 	})
 }
+
+func Empty() (*gorm.DB, error) {
+	return new(gorm.DB), nil
+}

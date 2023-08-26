@@ -11,7 +11,7 @@ type charCore struct {
 }
 
 func CharCore(db *gorm.DB) *charCore {
-	go db.AutoMigrate(&character{})
+	db.AutoMigrate(&character{})
 
 	return &charCore{
 		db: db,
