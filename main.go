@@ -1,12 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"go-rpg/app"
 	"go-rpg/db"
 	"go-rpg/server"
 	"go-rpg/service"
 	"go-rpg/setup"
-	"os"
 )
 
 const (
@@ -16,23 +16,13 @@ const (
 
 func main() {
 	if err := setup.InitLogger(); err != nil {
-		panic("error initializing logger: " + err.Error())
+		panic(fmt.Errorf("error initializing logger: %w", err))
 	}
 	defer setup.Logger.Sync()
 
-	sqldb, err := db.Empty()
-
-	switch os.Getenv("ENVIRONMENT") {
-	case "docker":
-		sqldb, err = db.Postgres()
-		if err != nil {
-			setup.Logger.Sugar().Panic("error initializing db: " + err.Error())
-		}
-	default:
-		sqldb, err = db.InMemory()
-		if err != nil {
-			setup.Logger.Sugar().Panic("error initializing db: " + err.Error())
-		}
+	sqldb, err := db.Postgres()
+	if err != nil {
+		setup.Logger.Sugar().Panicf("error initializing db: ", err)
 	}
 
 	charCore := app.CharCore(sqldb)

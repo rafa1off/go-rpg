@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/glebarez/sqlite v1.9.0
 	go.uber.org/zap v1.26.0
-	google.golang.org/grpc v1.58.1
+	google.golang.org/grpc v1.58.2
 	google.golang.org/protobuf v1.31.0
 	gorm.io/driver/postgres v1.5.2
 	gorm.io/gorm v1.25.4
@@ -28,9 +28,9 @@ require (
 	golang.org/x/net v0.15.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230913181813-007df8e322eb // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231002182017-d307bd883b97 // indirect
 	modernc.org/libc v1.24.1 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
-	modernc.org/memory v1.7.1 // indirect
-	modernc.org/sqlite v1.25.0 // indirect
+	modernc.org/memory v1.7.2 // indirect
+	modernc.org/sqlite v1.26.0 // indirect
 )
