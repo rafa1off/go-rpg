@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/glebarez/sqlite v1.9.0
 	go.uber.org/zap v1.26.0
-	google.golang.org/grpc v1.58.2
+	google.golang.org/grpc v1.58.3
 	google.golang.org/protobuf v1.31.0
 	gorm.io/driver/postgres v1.5.2
 	gorm.io/gorm v1.25.4
